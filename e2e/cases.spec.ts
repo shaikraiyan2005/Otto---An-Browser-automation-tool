@@ -42,7 +42,8 @@ async function fillOnce(panel: Page) {
 
 async function runCase(href: string, opts: { steps?: number; next?: string; waitMs?: number } = {}) {
   const page = await ctx.newPage();
-  await page.goto(`${BASE}${href}`, { waitUntil: "networkidle" });
+  await page.goto(`${BASE}${href}`, { waitUntil: "load", timeout: 120_000 });
+  await page.waitForLoadState("networkidle", { timeout: 10_000 }).catch(() => {});
   await page.bringToFront();
   if (opts.waitMs) await page.waitForTimeout(opts.waitMs);
   const target = href.split("?")[0] + (href.includes("?") ? `?${href.split("?")[1]}` : "");
@@ -92,7 +93,10 @@ test("playground", async () => {
   let total = 0;
   let traps = 0;
   for (const [href, opts] of CASES) {
+    const t0 = Date.now();
+    console.log(`> ${href}`);
     const { score, reports } = await runCase(href, opts);
+    console.log(`  ${score.correct}/${score.total} in ${Date.now() - t0}ms`);
     correct += score.correct;
     total += score.total;
     traps += score.trapViolations;
