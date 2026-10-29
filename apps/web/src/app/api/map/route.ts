@@ -12,13 +12,17 @@ export const POST = route(async (req: Request) => {
   if (input.fields.length === 0) return json({ mappings: [], usage: null });
   const [profile, settings] = await Promise.all([getProfile(), getSettings()]);
   const allowGenerate = input.allowGenerate && settings.allowGenerate;
+  // Values are only shared when a free-text answer must be written; otherwise the model sees key names only.
+  const needsValues = allowGenerate && input.fields.some((f) => f.line.split("|")[1] === "longtext");
+  const profileBlock = needsValues
+    ? ["Profile values (for generated answers):", ...Object.entries(profile).filter(([k]) => !/salary|bday|tel/.test(k)).map(([k, v]) => `${k} = ${v}`)]
+    : ["Profile keys the user has filled:", Object.keys(profile).join(", ")];
 
   const user = [
     `Page: ${input.page.title} — ${input.page.url}`,
     `Generation allowed: ${allowGenerate ? "yes" : "no"}`,
     "",
-    "Profile values:",
-    ...Object.entries(profile).map(([k, v]) => `${k} = ${v}`),
+    ...profileBlock,
     "",
     "Fields:",
     ...input.fields.map((f) => f.line),

@@ -12,7 +12,7 @@ ${catalogue}
 Custom keys look like custom:<slug> and appear in the profile values.
 
 For every field return exactly one mapping:
-- source "profile": the field asks for a profile value. Set key to the profile key. Set value to the text to type, converted to what the field expects: for choice fields the exact option text from opts; for dates the field's fmt (default YYYY-MM-DD); for a full-name field join first and last name; for country the option text or country name; for yes/no questions "Yes" or "No".
+- source "profile": the field asks for a profile value. Set key to the profile key. Set value to null when you do not see the user's values (the app converts the stored value itself); when values are shown, set value to the text converted to what the field expects (exact option text, the field's date fmt, "Yes"/"No").
 - source "generated": the field is a free-text question (motivation, cover letter, about you, short answer) and generation is allowed. Write a concise answer (1-3 sentences, respect max=) using only facts from the profile. key is null.
 - source "skip": you are not confident, the profile lacks the information, or the field is a password, one-time code, payment card, captcha, consent, terms, marketing or newsletter checkbox. key and value are null.
 
