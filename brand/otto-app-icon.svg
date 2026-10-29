@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="otto">
+  <!-- App / extension / favicon icon: white mark on a near-black rounded square. -->
+  <rect width="128" height="128" rx="28" fill="#0a0a0a"/>
+  <path fill="#fafafa" fill-rule="evenodd"
+        d="M50 38a26 26 0 1 0 0 52a26 26 0 1 0 0-52Z
+           M78 38a26 26 0 1 0 0 52a26 26 0 1 0 0-52Z"/>
+</svg>

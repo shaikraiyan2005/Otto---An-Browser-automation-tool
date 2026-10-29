@@ -1,0 +1,22 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>
+body{margin:0;display:grid;grid-template-columns:1fr 1fr;height:100vh;font-family:system-ui}
+.p{display:flex;align-items:center;justify-content:center;gap:28px;flex-direction:column}
+.l{background:#fafafa;color:#0a0a0a}.d{background:#0a0a0a;color:#fafafa}
+.row{display:flex;align-items:center;gap:12px;font-size:28px;font-weight:600;letter-spacing:-.02em}
+img{display:none}
+</style></head><body>
+<div class="p l">
+  <svg viewBox="0 0 64 64" width="160" height="160"><use href="otto-mark.svg#m"/></svg>
+  <div class="row"><svg viewBox="0 0 64 64" width="32" height="32" id="s1"></svg>otto</div>
+  <div class="row"><svg viewBox="0 0 64 64" width="16" height="16" id="s2"></svg><span style="font-size:14px">16px</span></div>
+</div>
+<div class="p d">
+  <svg viewBox="0 0 64 64" width="160" height="160" id="s3"></svg>
+  <div class="row"><svg viewBox="0 0 64 64" width="32" height="32" id="s4"></svg>otto</div>
+</div>
+<script>
+const d="M22 14a18 18 0 1 0 0 36a18 18 0 1 0 0-36Z M42 14a18 18 0 1 0 0 36a18 18 0 1 0 0-36Z";
+document.querySelectorAll('svg').forEach(s=>{s.innerHTML=`<path fill="currentColor" fill-rule="evenodd" d="${d}"/>`});
+</script>
+</body></html>
