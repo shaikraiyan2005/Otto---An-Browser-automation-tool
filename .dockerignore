@@ -1,0 +1,12 @@
+**/node_modules
+**/.next
+**/.output
+**/.wxt
+**/.env
+**/.env.local
+.git
+research
+e2e
+test-results
+playwright-report
+apps/web/src/generated

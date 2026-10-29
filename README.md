@@ -15,13 +15,13 @@ This repository is a **working prototype**, not a product. Its job is to answer 
 ┌──────────── Browser (Chrome first) ────────────┐        ┌──────── apps/web (Next.js) ────────┐
 │ apps/extension (WXT)                           │  HTTP  │  Frontend: dashboard + playground   │
 │  side panel UI ──► background ──► inject       │ ─────► │  Backend:  /api/* route handlers    │
-│                                   engine.js    │        │            SQLite (Drizzle)         │
+│                                   engine.js    │        │            PostgreSQL (Prisma)         │
 │  engine.js = packages/core (scan, match, fill) │        │            Claude (Anthropic SDK)   │
 └────────────────────────────────────────────────┘        └─────────────────────────────────────┘
 ```
 
 - **Frontend:** a Next.js web app (dashboard for profile, recipes, run history, settings) plus the extension's side panel.
-- **Backend:** Next.js route handlers in the same app, with SQLite for storage and Claude for the AI steps.
+- **Backend:** Next.js route handlers in the same app, with PostgreSQL for storage and Claude for the AI steps.
 - **Engine:** `packages/core`, plain TypeScript, injected into pages only when you use otto.
 - **Playground:** test forms inside the web app (React, Vue, jQuery, MUI, AntD, shadow DOM, iframes, honeypots, wizards…) with automatic scoring. This is how we measure whether otto works.
 
@@ -44,10 +44,10 @@ This repository is a **working prototype**, not a product. Its job is to answer 
 ## Quick start (once milestone M0 is built)
 
 ```bash
-corepack enable            # gives you pnpm
-pnpm install
+npm run db:up              # Postgres in Docker
+npm install
 cp apps/web/.env.example apps/web/.env.local   # add ANTHROPIC_API_KEY
-pnpm dev                   # web on http://localhost:3000, extension dev build in apps/extension/.output
+npm run dev                   # web on http://localhost:3000, extension dev build in apps/extension/.output
 ```
 
 Then load `apps/extension/.output/chrome-mv3-dev` as an unpacked extension in `chrome://extensions`, open http://localhost:3000/playground, and click the otto toolbar icon.

@@ -54,7 +54,7 @@ Short, practical list. Most items come from `research/09-edge-cases.md` and the 
 
 | Gotcha | What to do |
 |---|---|
-| `better-sqlite3` native build fails on Windows | Use `@libsql/client` (`file:` URL) — same Drizzle schema |
+| Prisma 7 needs a driver adapter | `new PrismaClient({ adapter: new PrismaPg({ connectionString }) })`; the datasource URL lives in `prisma.config.ts` |
 | Next.js route handler defaults | Add `export const runtime = "nodejs"` and `export const dynamic = "force-dynamic"` to API routes |
 | WXT dev mode + side panel | Side panel reloads on rebuild; the engine in open tabs becomes orphaned → handled by the orphan check |
 | `chrome.dom` not in types | Declare `chrome.dom.openOrClosedShadowRoot` in a `.d.ts` if the types package lacks it |

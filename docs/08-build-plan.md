@@ -4,17 +4,17 @@ Nine milestones. Each ends with a **Done when** check you can run. The order put
 
 ## M0 — Repo, tooling, brand (½ day)
 
-- [ ] `corepack enable`; root `package.json`, `pnpm-workspace.yaml`, `tsconfig.base.json`, `biome.json`, `.gitignore`, `git init`
+- [ ] `corepack enable`; root `package.json`, `package.json workspaces`, `tsconfig.base.json`, `biome.json`, `.gitignore`, `git init`
 - [ ] `packages/shared` and `packages/core` skeletons (`src/index.ts`, tsconfig, Vitest config)
 - [ ] `apps/web`: `create-next-app` (TypeScript, App Router, Tailwind, src dir), Geist font, tokens in `globals.css`, `transpilePackages: ["@otto/shared", "@otto/core"]`
 - [ ] `apps/extension`: WXT React template, `@wxt-dev/auto-icons` pointed at `brand/otto-app-icon.svg`, side panel entry, manifest from `02-tech-stack.md`
-- [ ] Root `pnpm dev` with `concurrently`
+- [ ] Root `npm run dev` with `concurrently`
 
-**Done when:** `pnpm dev` starts both; `localhost:3000` shows the empty shell with the logo; the unpacked extension loads and its toolbar click opens an empty side panel with the logo.
+**Done when:** `npm run dev` starts both; `localhost:3000` shows the empty shell with the logo; the unpacked extension loads and its toolbar click opens an empty side panel with the logo.
 
 ## M1 — Backend + dashboard shell (1 day)
 
-- [ ] Drizzle schema + `db:push` + demo profile seed
+- [ ] Prisma schema + `db:push` + demo profile seed
 - [ ] `lib/http.ts`, `middleware.ts` (CORS), `/api/health`, `/api/profile`, `/api/settings`, `/api/runs`, `/api/recipes` (+ lookup)
 - [ ] `lib/ai/client.ts` with `callStructured()`; a temporary `/api/debug/ping-model` to confirm the key works (delete after)
 - [ ] Dashboard pages: Overview (cards + table, empty states), Profile (grouped editor), Settings, Runs, Recipes (tables with empty states)

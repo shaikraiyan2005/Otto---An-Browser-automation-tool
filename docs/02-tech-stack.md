@@ -7,12 +7,12 @@ Pin exact versions in `package.json` when you scaffold (use the latest stable re
 | Tool | Version | Why |
 |---|---|---|
 | Node.js | 24 LTS (installed: v24.21.0) | Runs Next.js and the build tools. |
-| pnpm | 10.x via `corepack enable` | Workspaces for the monorepo; fast installs. pnpm is not installed yet. |
+| npm | 11 (bundled with Node 24) | Workspaces for the monorepo. |
 | TypeScript | 5.x, `strict: true` | One language across engine, extension and web. |
 | Biome | latest | Lint + format in one fast tool (simpler than ESLint + Prettier for a prototype). |
 | Vitest | latest | Unit tests for `packages/core` with `happy-dom`. |
 | Playwright | latest (**dev only**) | End-to-end tests: launches Chrome with the unpacked extension and runs the playground. Never shipped in the product. |
-| concurrently | latest | `pnpm dev` runs web + extension watchers together. |
+| concurrently | latest | `npm run dev` runs web + extension watchers together. |
 
 ## Backend (inside `apps/web`)
 
@@ -21,7 +21,7 @@ Pin exact versions in `package.json` when you scaffold (use the latest stable re
 | Next.js 16 (App Router) route handlers, `export const runtime = "nodejs"` | The backend. One process with the frontend; no separate server to run. |
 | `@anthropic-ai/sdk` | Claude calls. Structured outputs via `client.messages.parse()` + `zodOutputFormat()` from `@anthropic-ai/sdk/helpers/zod`. |
 | zod 4 | Request/response validation and structured-output schemas (shared with the extension through `packages/shared`). |
-| Drizzle ORM + `better-sqlite3` | SQLite file at `apps/web/data/otto.db`. Typed queries, simple migrations (`drizzle-kit push`). If `better-sqlite3` fails to install on Windows, switch the driver to `@libsql/client` with `url: "file:data/otto.db"` — the schema stays the same. |
+| Prisma 7 + PostgreSQL (`@prisma/adapter-pg`) | PostgreSQL 17 in Docker (`npm run db:up`). Schema in `apps/web/prisma/schema.prisma`, applied with `prisma db push`; client generated to `apps/web/src/generated/prisma`. |
 | `nanoid` | IDs for recipes and runs. |
 
 ### Claude settings
@@ -126,6 +126,6 @@ zod schemas and TS types: profile keys, `FieldDescriptor`, `Mapping`, `Recipe`, 
 |---|---|
 | Playwright / Puppeteer in the product | Too heavy; the engine is plain content scripts. Playwright is only for tests. |
 | LangChain or agent frameworks | Three single-call endpoints don't need them. |
-| A separate backend server (Express/Fastify) | Next.js route handlers are enough and keep one `pnpm dev`. |
+| A separate backend server (Express/Fastify) | Next.js route handlers are enough and keep one `npm run dev`. |
 | Vector DB | Rules + signatures + AI fallback are enough for the prototype. |
 | Plasmo | Maintenance mode; WXT is the better cross-browser base. |

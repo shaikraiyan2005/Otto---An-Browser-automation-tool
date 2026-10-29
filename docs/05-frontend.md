@@ -111,7 +111,7 @@ Width ~360–420 px. One column. Header + four tabs.
 
 ### States to design
 
-- Backend offline → banner "Start the otto backend: `pnpm dev`", disabled actions.
+- Backend offline → banner "Start the otto backend: `npm run dev`", disabled actions.
 - Restricted page (`chrome://`, Web Store, PDF viewer) → "otto can't read this page".
 - No fields found → "No form fields found. Try Pick to select a region."
 - Engine orphaned after extension reload → silent re-inject on next action.

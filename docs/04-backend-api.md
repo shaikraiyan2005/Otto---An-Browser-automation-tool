@@ -1,6 +1,6 @@
 # 04 — Backend
 
-The backend is the set of Next.js route handlers in `apps/web/src/app/api`, running on the Node runtime, with SQLite for storage and Claude for AI. It listens on `http://localhost:3000`.
+The backend is the set of Next.js route handlers in `apps/web/src/app/api`, running on the Node runtime, with PostgreSQL for storage and Claude for AI. It listens on `http://localhost:3000`.
 
 ## 1. Environment
 
@@ -9,7 +9,7 @@ The backend is the set of Next.js route handlers in `apps/web/src/app/api`, runn
 ```
 ANTHROPIC_API_KEY=sk-ant-...
 OTTO_MODEL=claude-opus-5-5        # optional: claude-sonnet-5-5 / claude-haiku-5-5 to compare
-OTTO_DB=data/otto.db
+DATABASE_URL="postgresql://otto:otto@localhost:5432/otto?schema=public"
 ```
 
 ## 2. CORS
@@ -19,7 +19,7 @@ OTTO_DB=data/otto.db
 - Allow origins that start with `chrome-extension://` or `moz-extension://`, and `http://localhost:3000`.
 - Answer `OPTIONS` preflight with `Access-Control-Allow-Methods: GET,POST,PUT,DELETE`, `Access-Control-Allow-Headers: content-type`.
 
-## 3. Database (Drizzle + SQLite)
+## 3. Database (Prisma + PostgreSQL)
 
 ```ts
 // lib/db/schema.ts

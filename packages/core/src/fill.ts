@@ -118,14 +118,14 @@ const OPTION_SEL = [
 ].join(",");
 
 function visibleOptions(listboxId?: string | null): HTMLElement[] {
-  const roots = collectRoots(document).roots;
-  let opts: HTMLElement[] = [];
+  const usable = (o: HTMLElement) => isVisible(o) && o.getAttribute("aria-disabled") !== "true";
+  // some widgets (Ant Design) point aria-controls at an invisible accessibility copy of the list
   if (listboxId) {
     const lb = document.getElementById(listboxId);
-    if (lb) opts = [...lb.querySelectorAll<HTMLElement>(OPTION_SEL)];
+    const opts = lb ? [...lb.querySelectorAll<HTMLElement>(OPTION_SEL)].filter(usable) : [];
+    if (opts.length) return opts;
   }
-  if (!opts.length) opts = queryAll<HTMLElement>(roots, OPTION_SEL);
-  return opts.filter((o) => isVisible(o) && o.getAttribute("aria-disabled") !== "true");
+  return queryAll<HTMLElement>(collectRoots(document).roots, OPTION_SEL).filter(usable);
 }
 
 const optionText = (o: Element) => (o.getAttribute("title") || o.textContent || "").trim();

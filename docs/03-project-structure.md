@@ -1,11 +1,11 @@
 # 03 — Project structure
 
-A pnpm monorepo. Two apps, two packages.
+A npm monorepo. Two apps, two packages.
 
 ```
 otto/  (repo root = E:\VS CODE\WORK\browser-automation)
 ├─ package.json                 workspace scripts: dev, build, test, lint, e2e
-├─ pnpm-workspace.yaml          apps/*, packages/*
+├─ package.json (workspaces)   apps/*, packages/*
 ├─ tsconfig.base.json           strict TS settings shared by all projects
 ├─ biome.json                   lint + format
 ├─ .gitignore                   node_modules, .output, .next, apps/web/data/*.db, .env.local
@@ -92,8 +92,8 @@ otto/  (repo root = E:\VS CODE\WORK\browser-automation)
 │  ├─ web/                      ── Next.js: FRONTEND (dashboard, playground) + BACKEND (/api)
 │  │  ├─ .env.example           ANTHROPIC_API_KEY=, OTTO_MODEL=claude-opus-5-5
 │  │  ├─ next.config.ts
-│  │  ├─ drizzle.config.ts
-│  │  ├─ data/                  otto.db (gitignored)
+│  │  ├─ prisma.config.ts
+│  │  ├─ prisma/                schema.prisma (PostgreSQL)
 │  │  ├─ public/
 │  │  │  ├─ brand/              copies of the logo SVGs
 │  │  │  └─ playground/         static HTML cases: plain.html, vue.html, jquery-select2.html,
@@ -130,7 +130,7 @@ otto/  (repo root = E:\VS CODE\WORK\browser-automation)
 │  │     │  ├─ Scorer.tsx       "Check result" panel; exposes window.__ottoScore()
 │  │     │  └─ cases/           one component per React case (see 07-playground.md)
 │  │     └─ lib/
-│  │        ├─ db/schema.ts     Drizzle tables
+│  │        ├─ db/schema.ts     Prisma models
 │  │        ├─ db/index.ts      connection + seed (demo profile)
 │  │        ├─ ai/client.ts     Anthropic client + helpers (parse, usage logging)
 │  │        ├─ ai/prompts.ts    system prompts for map / summarize / ask
@@ -168,12 +168,12 @@ otto/  (repo root = E:\VS CODE\WORK\browser-automation)
 
 | Script | Does |
 |---|---|
-| `pnpm dev` | `concurrently` → `pnpm --filter web dev` + `pnpm --filter extension dev` |
-| `pnpm build` | build shared → core → web → extension |
-| `pnpm test` | Vitest in `packages/core` |
-| `pnpm e2e` | Playwright against `localhost:3000` with the built extension |
-| `pnpm db:push` | `drizzle-kit push` for the SQLite schema |
-| `pnpm lint` | Biome check |
+| `npm run dev` | `concurrently` → `npm run dev -w @otto/web` + `npm run dev -w @otto/extension` |
+| `npm run build` | build shared → core → web → extension |
+| `npm test` | Vitest in `packages/core` |
+| `npm run e2e` | Playwright against `localhost:3000` with the built extension |
+| `npm run db:push` | `prisma db push` for the PostgreSQL schema |
+| `npm run typecheck` | Biome check |
 
 ## Package names
 

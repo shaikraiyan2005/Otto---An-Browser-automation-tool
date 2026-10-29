@@ -29,7 +29,7 @@ Everything else (encryption, store publishing, Safari, Pro debugger build, visua
                          │                                         /api/ask            POST  (Claude)       │
                          │                                         /api/settings       GET PUT              │
                          │                                                │                                 │
-                         │                                     lib/db (Drizzle + SQLite)  lib/ai (SDK)      │
+                         │                                     lib/db (Prisma + PostgreSQL)  lib/ai (SDK)      │
                          └────────────────────────────────────────────────┬─────────────────────────────────┘
                                                                           │ fetch (CORS allows extension origin)
 ┌──────────────────────────────────── apps/extension (WXT, Chrome MV3) ───┴────────────────────────────────────┐
@@ -57,7 +57,7 @@ packages/shared  zod schemas + TS types shared by web and extension (API contrac
 | Framework internals (React props, flatpickr instance) | `main-world.js` | Isolated world cannot see page JavaScript objects. |
 | UI the user interacts with | Side panel (extension) | One process per window, not per tab; survives page navigation. |
 | Message routing, injection | Background service worker | Has `scripting` / `tabs` APIs; must stay stateless (Chrome kills it after 30 s idle). |
-| Profile, recipes, run logs, settings | Backend (SQLite) | Visible and editable in the dashboard; survives extension reloads. |
+| Profile, recipes, run logs, settings | Backend (PostgreSQL) | Visible and editable in the dashboard; survives extension reloads. |
 | AI calls | Backend (`/api/map`, `/api/summarize`, `/api/ask`) | API key stays in `.env.local`; one place to change prompts and model. |
 | Measuring success | Playground pages + `/runs` | Known expected values → automatic scoring. |
 
@@ -175,7 +175,7 @@ The engine keeps `Map<number, WeakRef<Element>>` inside the page. Each candidate
 
 | Final product (research) | Prototype |
 |---|---|
-| Encrypted local vault, PII never sent to AI | Profile in SQLite in plain text; profile values may be sent to Claude for generated answers |
+| Encrypted local vault, PII never sent to AI | Profile in PostgreSQL in plain text; profile values may be sent to Claude for generated answers |
 | Fully client-side, BYOK | Local Next.js backend holds the API key |
 | `activeTab` + per-site optional permissions | `<all_urls>` host permission (simpler injection into iframes) |
 | Many browsers via WXT shells | Chrome first; `wxt build -b firefox` as a stretch check |

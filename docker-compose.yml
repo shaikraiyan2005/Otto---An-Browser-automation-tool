@@ -15,5 +15,27 @@ services:
       timeout: 3s
       retries: 20
 
+  # applies the Prisma schema, then exits
+  migrate:
+    build: { context: ., target: build }
+    profiles: ["app"]
+    environment:
+      DATABASE_URL: postgresql://otto:otto@db:5432/otto?schema=public
+    command: ["sh", "-c", "cd apps/web && npx prisma db push"]
+    depends_on:
+      db: { condition: service_healthy }
+
+  web:
+    build: { context: ., target: run }
+    profiles: ["app"]
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://otto:otto@db:5432/otto?schema=public
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      OTTO_MODEL: ${OTTO_MODEL:-claude-opus-5-5}
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+
 volumes:
   otto-db:
