@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="otto-case" content="jquery-select2">
+<title>Shipping details</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
+<style>
+  body { font-family: Tahoma, sans-serif; background: #fafafa; }
+  .panel { width: 480px; margin: 40px auto; background: #fff; border: 1px solid #ddd; padding: 20px; }
+  .form-group { margin-bottom: 14px; }
+  .form-group label { display: block; font-weight: bold; margin-bottom: 4px; font-size: 13px; }
+  .form-control { width: 100%; box-sizing: border-box; padding: 6px 8px; border: 1px solid #ccc; }
+  .select2-container { width: 100% !important; }
+</style>
+</head>
+<body>
+<div class="panel">
+  <h3>Shipping details</h3>
+  <div class="form-group"><label for="fn">First name</label><input id="fn" name="fname" class="form-control"></div>
+  <div class="form-group"><label for="em">Email</label><input id="em" name="email" class="form-control"></div>
+  <div class="form-group"><label for="ct">Country</label>
+    <select id="ct" name="country" class="js-s2"><option></option><option value="CA">Canada</option><option value="IN">India</option><option value="GB">United Kingdom</option><option value="US">United States</option></select></div>
+  <div class="form-group"><label for="st">State</label>
+    <select id="st" name="state" class="js-s2"><option></option><option value="AZ">Arizona</option><option value="CA">California</option><option value="NY">New York</option><option value="TX">Texas</option></select></div>
+  <div class="form-group"><label for="dob">Date of birth</label><input id="dob" name="dob" class="form-control" placeholder="YYYY-MM-DD"></div>
+</div>
+<script>
+  $(".js-s2").select2({ placeholder: "Select an option" });
+  flatpickr("#dob", { allowInput: true, dateFormat: "Y-m-d" });
+  window.__ottoCase = {
+    id: "jquery-select2",
+    read: () => ({ first: $("#fn").val(), email: $("#em").val(), country: $("#ct option:selected").text(),
+      state: $("#st option:selected").text(), dob: document.querySelector("#dob")._flatpickr.selectedDates[0] ?
+        flatpickr.formatDate(document.querySelector("#dob")._flatpickr.selectedDates[0], "Y-m-d") : "" }),
+  };
+</script>
+<script src="/playground/scorer.js"></script>
+</body>
+</html>

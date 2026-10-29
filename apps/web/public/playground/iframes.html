@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="otto-case" content="iframes">
+<title>Checkout</title>
+<style>
+  body { font-family: system-ui; background: #f8fafc; margin: 0; padding: 32px; }
+  .box { max-width: 560px; margin: 0 auto; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; }
+  label { display: grid; gap: 4px; font-size: 13px; margin-bottom: 12px; }
+  input { padding: 9px; border: 1px solid #cbd5e1; border-radius: 6px; }
+  iframe { width: 100%; border: 1px dashed #cbd5e1; border-radius: 8px; height: 190px; margin-bottom: 12px; background: #fff; }
+</style>
+</head>
+<body>
+<div class="box">
+  <h3>Checkout</h3>
+  <label>Email for receipt<input id="email" name="email" type="email"></label>
+  <iframe id="same" src="/playground/frame-child.html?part=name" title="name"></iframe>
+  <iframe id="cross" src="" title="address"></iframe>
+</div>
+<script>
+  const cross = document.getElementById("cross");
+  const otherHost = location.hostname === "127.0.0.1" ? "localhost" : "127.0.0.1";
+  cross.src = `${location.protocol}//${otherHost}:${location.port}/playground/frame-child.html?part=address`;
+  const ask = (frame) =>
+    new Promise((resolve) => {
+      const id = Math.random().toString(36).slice(2);
+      const on = (e) => { if (e.data && e.data.ottoId === id) { removeEventListener("message", on); resolve(e.data.values); } };
+      addEventListener("message", on);
+      frame.contentWindow.postMessage({ ottoRead: id }, "*");
+      setTimeout(() => resolve({}), 1500);
+    });
+  window.__ottoCase = {
+    id: "iframes",
+    read: async () => ({ email: document.getElementById("email").value, ...(await ask(document.getElementById("same"))), ...(await ask(cross)) }),
+  };
+</script>
+<script src="/playground/scorer.js"></script>
+</body>
+</html>

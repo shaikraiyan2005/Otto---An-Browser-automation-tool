@@ -1,0 +1,6 @@
+import { getSettings } from "@/lib/store";
+import { SettingsForm } from "./SettingsForm";
+
+export default async function SettingsPage() {
+  return <SettingsForm initial={await getSettings()} />;
+}

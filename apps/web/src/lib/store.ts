@@ -73,6 +73,7 @@ export async function getSettings(): Promise<Settings> {
 }
 
 export async function setSettings(s: Settings) {
-  await db.setting.upsert({ where: { id: 1 }, create: { id: 1, json: s }, update: { json: s } });
+  const json = { ...s } as Record<string, string | number | boolean>;
+  await db.setting.upsert({ where: { id: 1 }, create: { id: 1, json }, update: { json } });
   return getSettings();
 }

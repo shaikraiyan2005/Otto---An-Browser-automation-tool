@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>frame</title>
+<style>body { font-family: system-ui; margin: 12px; } label { display: grid; gap: 4px; font-size: 13px; margin-bottom: 10px; } input { padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; }</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  const part = new URLSearchParams(location.search).get("part");
+  const fields = part === "name"
+    ? [["first", "First name"], ["last", "Last name"]]
+    : [["city", "City"], ["zip", "Postal / ZIP code"]];
+  document.getElementById("root").innerHTML = fields.map(([n, l]) => `<label>${l}<input name="${n}" id="${n}"></label>`).join("");
+  addEventListener("message", (e) => {
+    if (!e.data || !e.data.ottoRead) return;
+    const values = Object.fromEntries(fields.map(([n]) => [n, document.getElementById(n).value]));
+    e.source.postMessage({ ottoId: e.data.ottoRead, values }, "*");
+  });
+</script>
+</body>
+</html>

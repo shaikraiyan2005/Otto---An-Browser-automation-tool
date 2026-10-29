@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="otto-case" content="big-dom">
+<title>Big catalogue</title>
+<style>
+  body { font-family: system-ui; margin: 0; }
+  .grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 2px; font-size: 10px; padding: 8px; }
+  .cell { border: 1px solid #eee; padding: 2px; }
+  form { max-width: 480px; margin: 40px auto; display: grid; gap: 10px; }
+  label { display: grid; gap: 4px; font-size: 13px; }
+  input { padding: 8px; border: 1px solid #ccc; border-radius: 6px; }
+</style>
+</head>
+<body>
+<div class="grid" id="grid"></div>
+<form id="f" onsubmit="return false">
+  <h3>Contact us</h3>
+  <label>First name<input name="first"></label>
+  <label>Last name<input name="last"></label>
+  <label>Email<input name="email" type="email"></label>
+  <label>Phone<input name="phone" type="tel"></label>
+  <label>City<input name="city"></label>
+  <label>ZIP<input name="zip"></label>
+</form>
+<script>
+  const grid = document.getElementById("grid");
+  const frag = document.createDocumentFragment();
+  for (let i = 0; i < 10000; i++) {
+    const c = document.createElement("div");
+    c.className = "cell";
+    c.innerHTML = `<span>Item ${i}</span><b>${(i * 7) % 100}</b><i>sku-${i}</i><em>★</em>`;
+    frag.appendChild(c);
+  }
+  grid.appendChild(frag);
+  window.__ottoCase = {
+    id: "big-dom",
+    read() {
+      const f = document.getElementById("f").elements;
+      return { first: f.first.value, last: f.last.value, email: f.email.value, phone: f.phone.value, city: f.city.value, zip: f.zip.value };
+    },
+  };
+</script>
+<script src="/playground/scorer.js"></script>
+</body>
+</html>

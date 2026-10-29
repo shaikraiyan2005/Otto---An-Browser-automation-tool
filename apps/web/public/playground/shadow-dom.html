@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="otto-case" content="shadow-dom">
+<title>Web components</title>
+<style>body { font-family: system-ui; background: #fff7ed; margin: 0; padding: 40px; } section { max-width: 480px; margin: 0 auto 24px; }</style>
+</head>
+<body>
+<section><contact-card-open></contact-card-open></section>
+<section><contact-card-closed></contact-card-closed></section>
+<script>
+  const css = `<style>
+    .card { background: #fff; border: 1px solid #fed7aa; border-radius: 12px; padding: 20px; }
+    .row { display: grid; gap: 4px; margin-bottom: 12px; font-size: 13px; color: #7c2d12; }
+    input { padding: 9px; border: 1px solid #fdba74; border-radius: 6px; font: inherit; }
+  </style>`;
+  const field = (id, label) => `<div class="row"><label for="${id}">${label}</label><input id="${id}" name="${id}"></div>`;
+
+  class OpenCard extends HTMLElement {
+    constructor() {
+      super();
+      this.attachShadow({ mode: "open" }).innerHTML = css + `<div class="card"><h3>Personal</h3>${field("first", "First name")}${field("last", "Last name")}${field("email", "Email address")}</div>`;
+    }
+    values() { const r = this.shadowRoot; return { first: r.getElementById("first").value, last: r.getElementById("last").value, email: r.getElementById("email").value }; }
+  }
+  class ClosedCard extends HTMLElement {
+    #root;
+    constructor() {
+      super();
+      this.#root = this.attachShadow({ mode: "closed" });
+      this.#root.innerHTML = css + `<div class="card"><h3>Contact</h3>${field("phone", "Phone number")}${field("city", "City")}${field("zip", "Postal code")}</div>`;
+    }
+    values() { const r = this.#root; return { phone: r.getElementById("phone").value, city: r.getElementById("city").value, zip: r.getElementById("zip").value }; }
+  }
+  customElements.define("contact-card-open", OpenCard);
+  customElements.define("contact-card-closed", ClosedCard);
+  window.__ottoCase = {
+    id: "shadow-dom",
+    read: () => ({ ...document.querySelector("contact-card-open").values(), ...document.querySelector("contact-card-closed").values() }),
+  };
+</script>
+<script src="/playground/scorer.js"></script>
+</body>
+</html>

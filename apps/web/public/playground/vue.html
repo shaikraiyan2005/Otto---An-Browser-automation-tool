@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="otto-case" content="vue">
+<title>Vue signup</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.21/vue.global.prod.min.js"></script>
+<style>
+  body { font-family: "Segoe UI", sans-serif; background: #f0fdf4; color: #14532d; margin: 0; }
+  #app { max-width: 520px; margin: 40px auto; background: #fff; border-radius: 14px; padding: 28px; box-shadow: 0 8px 30px rgba(20,83,45,.08); }
+  .f { margin-bottom: 14px; }
+  .f > span { display: block; font-size: 13px; margin-bottom: 4px; }
+  input, select { width: 100%; box-sizing: border-box; padding: 10px; border: 1px solid #bbf7d0; border-radius: 8px; font: inherit; }
+  .dd { position: relative; }
+  .dd-btn { border: 1px solid #bbf7d0; border-radius: 8px; padding: 10px; cursor: pointer; min-height: 20px; }
+  .dd-list { position: absolute; left: 0; right: 0; top: 100%; background: #fff; border: 1px solid #bbf7d0; border-radius: 8px; margin-top: 4px; z-index: 5; }
+  .dd-item { padding: 8px 10px; cursor: pointer; }
+  .dd-item:hover { background: #dcfce7; }
+  .radios label { margin-right: 14px; }
+  .radios input { width: auto; }
+</style>
+</head>
+<body>
+<div id="app">
+  <h2>Join the community</h2>
+  <label class="f"><span>First name</span><input v-model="first" name="first"></label>
+  <label class="f"><span>Last name</span><input v-model="last" name="last"></label>
+  <label class="f"><span>Email</span><input v-model="email" type="email" name="email"></label>
+  <label class="f"><span>City</span><input v-model.lazy="city" name="city"></label>
+  <label class="f"><span>Country</span>
+    <select v-model="country" name="country"><option value="">Choose</option><option v-for="c in countries" :value="c">{{ c }}</option></select></label>
+  <div class="f radios"><span>Gender</span>
+    <label><input type="radio" value="female" v-model="gender"> Female</label>
+    <label><input type="radio" value="male" v-model="gender"> Male</label>
+    <label><input type="radio" value="other" v-model="gender"> Other</label></div>
+  <div class="f"><span id="deg-label">Highest degree</span>
+    <div class="dd">
+      <div class="dd-btn" role="combobox" aria-labelledby="deg-label" :aria-expanded="open" aria-haspopup="listbox" tabindex="0" @click="open = !open">{{ degree || "Select…" }}</div>
+      <div class="dd-list" v-if="open" role="listbox">
+        <div class="dd-item" role="option" v-for="d in degrees" @click="degree = d; open = false">{{ d }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  const app = Vue.createApp({
+    data: () => ({ first: "", last: "", email: "", city: "", country: "", gender: "", degree: "", open: false,
+      countries: ["Canada", "India", "United Kingdom", "United States"],
+      degrees: ["High School", "Associate Degree", "Bachelor of Science", "Master of Science", "PhD"] }),
+  }).mount("#app");
+  window.__ottoCase = {
+    id: "vue",
+    read: () => ({ first: app.first, last: app.last, email: app.email, city: app.city, country: app.country, gender: app.gender, degree: app.degree }),
+  };
+</script>
+<script src="/playground/scorer.js"></script>
+</body>
+</html>
