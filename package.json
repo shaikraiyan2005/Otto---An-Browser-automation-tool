@@ -22,5 +22,10 @@
     "@playwright/test": "1.64.1",
     "concurrently": "^9.2.1",
     "typescript": "^5.9.3"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true,
+    "@prisma/engines@7.10.1": true,
+    "prisma@7.10.1": true
   }
 }
