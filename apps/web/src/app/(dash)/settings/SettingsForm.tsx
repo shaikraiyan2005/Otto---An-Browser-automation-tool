@@ -4,7 +4,7 @@ import type { Settings } from "@otto/shared";
 import { useState } from "react";
 import { PageTitle } from "@/components/Shell";
 
-const MODELS = ["claude-opus-5-5", "claude-sonnet-5-5", "claude-haiku-5-5"];
+const MODELS = ["gemini-3-flash-preview", "gemini-3.5-flash", "claude-opus-5-5", "claude-sonnet-5-5", "claude-haiku-5-5"];
 const EFFORTS = ["low", "medium", "high"] as const;
 
 function Row({ label, children }: { label: string; children: React.ReactNode }) {

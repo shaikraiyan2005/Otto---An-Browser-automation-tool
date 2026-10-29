@@ -18,7 +18,7 @@ export const GET = route(async () => {
   return json({
     ok: database === "ok",
     db: database,
-    hasApiKey: hasCredentials(),
+    hasApiKey: hasCredentials(settings?.model),
     model: settings?.model ?? process.env.OTTO_MODEL ?? null,
     version: ENGINE_VERSION,
   });

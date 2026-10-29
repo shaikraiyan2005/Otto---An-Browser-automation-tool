@@ -35,7 +35,7 @@ export default async function Overview() {
               db
             </span>
             <span className="flex items-center gap-1.5">
-              <Dot tone={hasCredentials() ? "ok" : "bad"} />
+              <Dot tone={hasCredentials(settings.model) ? "ok" : "bad"} />
               {settings.model}
             </span>
           </div>
