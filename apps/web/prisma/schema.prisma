@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model ProfileField {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+model Setting {
+  id   Int  @id @default(1)
+  json Json
+}
+
+model Recipe {
+  id        String   @id @default(cuid())
+  origin    String
+  path      String
+  formSig   String
+  title     String
+  steps     Json
+  stats     Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([origin, path])
+  @@index([origin, formSig])
+}
+
+model Run {
+  id          String   @id @default(cuid())
+  kind        String
+  url         String
+  origin      String
+  caseId      String?
+  model       String?
+  recipeId    String?
+  fieldsFound Int
+  filled      Int
+  verified    Int
+  failed      Int
+  skipped     Int
+  healed      Int
+  llmCalls    Int
+  tokensIn    Int
+  tokensOut   Int
+  cacheRead   Int
+  msScan      Int
+  msMatch     Int
+  msAi        Int
+  msFill      Int
+  msTotal     Int
+  details     Json
+  createdAt   DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+model Score {
+  id             String   @id @default(cuid())
+  caseId         String
+  correct        Int
+  wrong          Int
+  empty          Int
+  trapViolations Int
+  total          Int
+  details        Json
+  createdAt      DateTime @default(now())
+
+  @@index([caseId, createdAt])
+}

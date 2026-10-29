@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="otto-case" content="no-labels">
+<title>Get in touch</title>
+<style>
+  body { font-family: "Trebuchet MS", sans-serif; background: #101828; color: #e4e7ec; margin: 0; }
+  .x9f2a { max-width: 760px; margin: 48px auto; padding: 0 16px; }
+  .k1 { display: grid; grid-template-columns: 180px 1fr; gap: 14px 18px; align-items: center; }
+  .k2 { color: #98a2b3; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; }
+  .k3 { background: #1d2939; border: 1px solid #344054; color: #fff; padding: 10px 12px; border-radius: 6px; font: inherit; width: 100%; box-sizing: border-box; }
+  .k4 { margin-top: 26px; }
+  .k5 { color: #98a2b3; font-size: 13px; margin-bottom: 6px; }
+  .k6 { display: flex; gap: 12px; }
+  .k6 > div { flex: 1; }
+  .btn_77 { margin-top: 24px; background: #7f56d9; color: #fff; padding: 12px 18px; border-radius: 8px; display: inline-block; cursor: pointer; }
+</style>
+</head>
+<body>
+<div class="x9f2a">
+  <div style="font-size: 28px; font-weight: 700; margin-bottom: 24px;">Get in touch</div>
+  <div class="k1">
+    <div class="k2">Given name</div><div><input class="k3"></div>
+    <div class="k2">Surname</div><div><input class="k3"></div>
+    <div class="k2">E-mail</div><div><input class="k3"></div>
+    <div class="k2">Mobile</div><div><input class="k3"></div>
+  </div>
+  <div class="k4">
+    <div class="k6">
+      <div><div class="k5">Employer</div><input class="k3"></div>
+      <div><div class="k5">Your role</div><input class="k3"></div>
+    </div>
+  </div>
+  <div class="k4"><span class="k5">Town / city</span><br><input class="k3"></div>
+  <div class="k4 k6">
+    <div><input class="k3" placeholder="LinkedIn profile URL"></div>
+    <div><input class="k3" placeholder="GitHub username or URL"></div>
+  </div>
+  <div class="k4"><input class="k3" placeholder="Personal website"></div>
+  <div class="btn_77">Send</div>
+</div>
+<script>
+  window.__ottoCase = {
+    id: "no-labels",
+    read() {
+      const inputs = [...document.querySelectorAll("input.k3")];
+      const out = {};
+      inputs.forEach((el, i) => (out["f" + (i + 1)] = el.value));
+      return out;
+    },
+  };
+</script>
+<script src="/playground/scorer.js"></script>
+</body>
+</html>

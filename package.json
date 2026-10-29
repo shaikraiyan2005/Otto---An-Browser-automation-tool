@@ -1,0 +1,26 @@
+{
+  "name": "otto",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n web,ext -c gray,white \"npm run dev -w @otto/web\" \"npm run dev -w @otto/extension\"",
+    "dev:web": "npm run dev -w @otto/web",
+    "dev:ext": "npm run dev -w @otto/extension",
+    "db:up": "docker compose up -d db",
+    "db:push": "npm run db:push -w @otto/web",
+    "build": "npm run build -w @otto/web && npm run build -w @otto/extension",
+    "build:ext": "npm run build -w @otto/extension",
+    "test": "npm run test -w @otto/core",
+    "typecheck": "tsc -p packages/core && tsc -p packages/shared && npm run typecheck -w @otto/web && npm run typecheck -w @otto/extension",
+    "e2e": "playwright test -c e2e/playwright.config.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "concurrently": "^9.2.1",
+    "typescript": "^5.9.3"
+  }
+}

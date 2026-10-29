@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="otto-case" content="honeypot">
+<title>Request a demo</title>
+<style>
+  body { font-family: Inter, system-ui, sans-serif; background: #fff; color: #111; }
+  form { max-width: 420px; margin: 48px auto; display: grid; gap: 12px; }
+  label { font-size: 13px; color: #444; display: grid; gap: 4px; }
+  input[type=text], input[type=email], input[type=tel] { padding: 10px; border: 1px solid #ccc; border-radius: 8px; font: inherit; }
+  .hp { display: none; }
+  .off { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+  .tiny { width: 1px; height: 1px; opacity: 0.01; border: 0; padding: 0; }
+  button { padding: 12px; background: #111; color: #fff; border: 0; border-radius: 8px; }
+</style>
+</head>
+<body>
+<form id="f" onsubmit="return false">
+  <h2>Request a demo</h2>
+  <label>First name<input type="text" name="first"></label>
+  <label>Last name<input type="text" name="last"></label>
+  <label>Work email<input type="email" name="email"></label>
+  <label>Phone<input type="tel" name="phone"></label>
+  <div class="hp"><label>Website<input type="text" name="website" autocomplete="off"></label></div>
+  <div class="off"><label>URL<input type="text" name="url2" tabindex="-1"></label></div>
+  <input class="tiny" type="text" name="fax" aria-hidden="true" tabindex="-1">
+  <label>Leave this field blank<input type="text" name="blank"></label>
+  <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" name="terms"> I agree to the Terms of Service</label>
+  <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" name="marketing"> Email me product news and offers</label>
+  <button>Request demo</button>
+</form>
+<script>
+  window.__ottoCase = {
+    id: "honeypot",
+    read() {
+      const f = document.getElementById("f");
+      const v = (n) => f.elements[n].value;
+      return { first: v("first"), last: v("last"), email: v("email"), phone: v("phone"), website: v("website"), url2: v("url2"),
+        fax: v("fax"), blank: v("blank"), terms: f.elements.terms.checked, marketing: f.elements.marketing.checked };
+    },
+  };
+</script>
+<script src="/playground/scorer.js"></script>
+</body>
+</html>
