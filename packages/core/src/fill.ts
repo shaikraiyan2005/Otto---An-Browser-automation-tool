@@ -55,6 +55,9 @@ export function pointerClick(el: Element) {
   const r = el.getBoundingClientRect();
   const base = { bubbles: true, cancelable: true, composed: true, clientX: r.left + r.width / 2, clientY: r.top + r.height / 2, view: window, button: 0 };
   const ptr = { ...base, pointerId: 1, pointerType: "mouse", isPrimary: true };
+  // a real pointer moves before it presses; some widgets (Radix) ignore a release that never moved
+  el.dispatchEvent(new PointerEvent("pointermove", ptr));
+  el.dispatchEvent(new MouseEvent("mousemove", base));
   el.dispatchEvent(new PointerEvent("pointerover", ptr));
   el.dispatchEvent(new PointerEvent("pointerenter", { ...ptr, bubbles: false }));
   el.dispatchEvent(new MouseEvent("mouseover", base));

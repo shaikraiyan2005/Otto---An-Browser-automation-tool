@@ -166,15 +166,18 @@ export function matchByRules(fields: FieldDescriptor[], profile: Profile): RuleR
     mappings.push({ ref: f.ref, source: "rule", key: r.key, value, confidence: r.confidence, reason: `rule · ${profileMeta(r.key)?.label ?? r.key}`, enabled: true });
   }
 
-  // a single "street address" field means line1 when the form also has a line2 field
-  const hasLine2 = [...keys.values()].includes("address-line2");
-  if (hasLine2) {
-    for (const m of mappings) {
-      if (m.key === "street-address" && profile["address-line1"]) {
-        m.key = "address-line1";
-        m.value = profile["address-line1"];
-      }
+  normalizeAddress(mappings, profile, [...keys.values()]);
+  return { mappings, leftovers };
+}
+
+/** A "street address" field means address line 1 when the same form also asks for line 2. */
+export function normalizeAddress(mappings: Mapping[], profile: Profile, extraKeys: string[] = []) {
+  const hasLine2 = extraKeys.includes("address-line2") || mappings.some((m) => m.key === "address-line2");
+  if (!hasLine2 || !profile["address-line1"]) return;
+  for (const m of mappings) {
+    if (m.key === "street-address") {
+      m.key = "address-line1";
+      m.value = profile["address-line1"];
     }
   }
-  return { mappings, leftovers };
 }

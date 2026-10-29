@@ -163,7 +163,7 @@ function classify(label: string, b: Built): { trap?: string; blocked?: string } 
   const all = `${label} ${el.name ?? ""} ${el.id}`;
   if (TRAP_RE.test(all)) return { trap: "honeypot name/label" };
   const ac = (el.getAttribute("autocomplete") ?? "").toLowerCase();
-  if (el.type === "password" || ac.startsWith("cc-") || ac === "one-time-code" || ac.includes("password") || SENSITIVE_RE.test(label)) {
+  if (el.type === "password" || ac.startsWith("cc-") || ac === "one-time-code" || ac === "current-password" || SENSITIVE_RE.test(label)) {
     return { blocked: "sensitive" };
   }
   if (b.widget === "checkbox" && CONSENT_RE.test(label)) return { blocked: "consent" };
@@ -219,6 +219,13 @@ function currentValue(b: Built): string {
   return clean(el.value ?? "", 80);
 }
 
+/** Nearest ancestor that holds more than one radio (for radios without a name). */
+function radioContainer(r: HTMLInputElement): Element {
+  let n: Element | null = r.parentElement;
+  for (let i = 0; n && i < 4; i++, n = n.parentElement) if (n.querySelectorAll("input[type=radio]").length > 1) return n;
+  return r;
+}
+
 /** Scan this frame's document (and its shadow roots) for fillable fields. */
 export function scan(): ScanResult {
   const t0 = performance.now();
@@ -235,14 +242,12 @@ export function scan(): ScanResult {
     if (b.widget === "radio-group") {
       const r = b.el as HTMLInputElement;
       const container = r.closest("[role=radiogroup], .ant-radio-group, fieldset");
-      const key: string | Element = r.name ? `${r.form ? "f" : "d"}:${r.name}` : (container ?? r);
+      const key: string | Element = r.name ? `${r.form ? "f" : "d"}:${r.name}` : (container ?? radioContainer(r));
       if (radioGroups.has(key)) continue;
       const scope = r.form ?? (r.getRootNode() as Document | ShadowRoot);
       const group = r.name
         ? [...scope.querySelectorAll<HTMLInputElement>(`input[type=radio][name="${CSS.escape(r.name)}"]`)]
-        : container
-          ? [...container.querySelectorAll<HTMLInputElement>("input[type=radio]")]
-          : [r];
+        : [...(container ?? radioContainer(r)).querySelectorAll<HTMLInputElement>("input[type=radio]")];
       radioGroups.set(key, group);
       b.group = group;
       b.root = group.find((x) => isVisible(x) || isVisible(x.labels?.[0] ?? x)) ?? r;

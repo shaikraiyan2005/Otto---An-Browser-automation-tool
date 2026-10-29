@@ -1,4 +1,4 @@
-import { buildSteps, fieldLine, formatFor, formSignature, matchByRules, resolveSteps } from "@otto/core";
+import { buildSteps, fieldLine, formatFor, formSignature, matchByRules, normalizeAddress, resolveSteps } from "@otto/core";
 import type { FieldDescriptor, FillResult, Mapping, Profile, Recipe, RunReport, Settings } from "@otto/shared";
 import { api } from "./api";
 import { fillTab, scanTab } from "./tab";
@@ -164,6 +164,7 @@ export async function plan(tabId: number, profile: Profile, settings: Settings, 
     }
     p.t.ai = now() - ta;
   }
+  normalizeAddress(p.mappings, profile);
   await attachFiles(fields, p.mappings);
   const order = new Map(fields.map((f, i) => [f.ref, i]));
   p.mappings.sort((a, b) => (order.get(a.ref) ?? 0) - (order.get(b.ref) ?? 0));
