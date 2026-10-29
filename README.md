@@ -41,13 +41,19 @@ This repository is a **working prototype**, not a product. Its job is to answer 
 | [brand/README.md](brand/README.md) | Logo files and palette |
 | [research/](research/) | The research behind these decisions |
 
-## Quick start (once milestone M0 is built)
+## Quick start
 
 ```bash
-npm run db:up              # Postgres in Docker
 npm install
-cp apps/web/.env.example apps/web/.env.local   # add ANTHROPIC_API_KEY
-npm run dev                   # web on http://localhost:3000, extension dev build in apps/extension/.output
+npm run db:up                                   # PostgreSQL in Docker
+cp apps/web/.env.example apps/web/.env          # set ANTHROPIC_API_KEY (optional: rules work without it)
+npm run db:push                                 # create tables
+npm run dev:web                                 # http://localhost:3000
+npm run build:ext                               # builds apps/extension/.output/chrome-mv3
 ```
 
-Then load `apps/extension/.output/chrome-mv3-dev` as an unpacked extension in `chrome://extensions`, open http://localhost:3000/playground, and click the otto toolbar icon.
+Load `apps/extension/.output/chrome-mv3` as an unpacked extension in `chrome://extensions` (Developer mode → Load unpacked), open http://localhost:3000/playground, open a case and click the otto toolbar icon.
+
+Run everything in Docker instead: `docker compose --profile app up --build` (web on port 3000, Postgres on 5432).
+
+Tests: `npm test` (engine unit tests) and `npm run e2e` (loads the built extension in Chromium and scores every playground case; needs the web app running).
